@@ -1,36 +1,47 @@
 <template>
   <v-app>
-    <v-app-bar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        text
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-app-bar>
+
+    <v-app-bar app fixed clipped-left text-center color="green accent-3" dark>
+    <v-toolbar-side-icon v-if="sidebar" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+  <v-spacer></v-spacer>
+  <v-toolbar-title class="font-weight-medium">
+    <a href="/" class="white--text">OPENCHAT グループ検索</a>
+  </v-toolbar-title>
+  <v-layout align-center justify-end>
+  </v-layout>
+</v-app-bar>
+
 
     <v-content>
-      <HelloWorld/>
+      <router-view/>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld';
 
 export default {
   name: 'App',
   components: {
-    HelloWorld,
+    //HelloWorld,
   },
   data: () => ({
     //
   }),
 };
 </script>
+
+<style>
+a {
+  text-decoration: none;
+  color: white;
+}
+
+a:visited {
+  color: white;
+}
+
+a:hover {
+  text-decoration: none;
+}
+</style>

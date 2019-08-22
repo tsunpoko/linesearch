@@ -13,6 +13,7 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
+    "@mdi/js": "^4.1.95",
     "@vue/cli-service": "^3.11.0",
     "sass": "^1.17.4",
     "sass-loader": "^7.1.0",
