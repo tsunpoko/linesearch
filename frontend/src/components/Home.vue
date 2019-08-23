@@ -90,46 +90,16 @@
 </template>
 
 <script>
+import axios from 'axios';
+
+axios.interceptors.response.use(null, (error) => {
+    return Promise.reject(error);
+});
+
 export default {
   data: () => ({
     groups: [],
     list_groups: [
-      {
-        color: '#1F7087',
-        src: 'https://news.mynavi.jp/article/20181102-LINE/images/005.jpg',
-        name: 'aaa',
-        description: 'asdfasdfasdfasdf\n',
-        num: 100,
-        url: "https://google.com",
-      },      {
-        color: '#1F7087',
-        src: 'https://news.mynavi.jp/article/20181102-LINE/images/005.jpg',
-        name: 'aaaaaaaa',
-        description: 'asdfasdfasdfasdf',
-        num: 'Foster the People',
-        url: "https://google.com",
-      },      {
-        color: '#1F7087',
-        src: 'https://news.mynavi.jp/article/20181102-LINE/images/005.jpg',
-        name: 'aaaaaaaaaa',
-        description: 'asdfasdfasdfasdf',
-        num: 'Foster the People',
-        url: "https://google.com",
-      },     {
-        color: '#1F7087',
-        src: 'https://news.mynavi.jp/article/20181102-LINE/images/005.jpg',
-        name: 'aaaaaaaaaa',
-        description: 'asdfasdfasdfasdf',
-        num: 'Foster the People',
-        url: "https://google.com",
-      },{
-        color: '#1F7087',
-        src: 'https://news.mynavi.jp/article/20181102-LINE/images/005.jpg',
-        name: 'ああ',
-        description: 'asdfasdfasdfasdf\n',
-        num: 'Foster the People',
-        url: "https://google.com",
-      },
     ],
 
     search: "",
@@ -151,6 +121,8 @@ export default {
         return
       }
       this.groups = []
+      axios.get("http://localhost:3000/api/groups")
+.then(response => { this.list_groups = response.data } )
       for (var i of this.list_groups) {
         //console.log(i.name)
         if ( i.name.indexOf(this.search) != -1 ) {
