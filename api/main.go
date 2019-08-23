@@ -46,6 +46,7 @@ func main() {
 	controller := controllers.Controller{}
 	router := mux.NewRouter()
 	router.HandleFunc("/api/groups", controller.GetGroups(db)).Methods("GET")
+	router.HandleFunc("/api/groups", controller.AddGroup(db)).Methods("POST")
 	log.Println("Server up on port 3000...")
 	log.Fatal(http.ListenAndServe(":3000", router))
 }

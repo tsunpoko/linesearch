@@ -2,7 +2,6 @@
   <v-app>
 
     <v-app-bar app fixed clipped-left text-center color="green accent-3" dark>
-    <v-toolbar-side-icon v-if="sidebar" @click.stop="drawer = !drawer"></v-toolbar-side-icon>
   <v-spacer></v-spacer>
   <v-toolbar-title class="font-weight-medium">
     <a href="/" class="white--text">OPENCHAT グループ検索</a>

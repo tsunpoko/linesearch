@@ -51,7 +51,7 @@
               :disabled="!valid"
               color="success"
               class="mr-4"
-              @click="validate"
+              @click="registGroup"
             >
               登録
             </v-btn>
@@ -68,14 +68,35 @@
 
 
 <script>
+import axios from 'axios';
+
+//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.interceptors.response.use(null, (error) => {
+    return Promise.reject(error);
+});
+
   export default {
     data: () => ({
+      charge_name: "",
       valid: true,
       nameRules: [
         v => !!v || '必須項目です',
         v => (v && v.length <= 100) || '100文字以下で入力してください',
       ],
     }),
+    methods: {
+      registGroup () {
+        let params = new URLSearchParams();
+        params.append('url', this.charge_name);
+        params.append('url2', this.charge_name);
+        axios.post("http://localhost:3000/api/groups", params)
+        .then(response => { console.log(response) } )
+        .catch(error => {
+          console.log(error);
+        });
+      }
+    }
   }
 </script>
 
