@@ -29,20 +29,13 @@
     <v-card-text class="headline font-weight-bold grey lighten-5">
 
       <v-card-actions class="">
-
-
         <v-autocomplete
         color="grey darken-2"
         hide-no-data
         hide-selected
-        v-model="model"
-        :items="items"
-        item-text="Description"
-        item-value="API"
-        cache-items
-        :loading="isLoading"
         :search-input.sync="search"
         label="グループ名を検索"
+        :placeholder=search
         prepend-icon="mdi-magnify"
         return-object
         ></v-autocomplete>
@@ -50,42 +43,42 @@
 
       </v-card-actions>
 
-      <v-row>
-        <v-col
-        v-for="(group, i) in groups"
-        :key="i"
-        >
-        <v-card
-        color="green accent-4"
-        dark
-        >
-        <v-list-item three-line>
-          <v-list-item-content class="align-self-start">
-            <v-list-item-title
-            class="headline mb-2"
-            v-text="group.name"
-            ></v-list-item-title>
-
-            <v-list-item-subtitle v-text="group.description"></v-list-item-subtitle>
-            <v-list-item-subtitle v-text="'参加人数 : ' + group.num"></v-list-item-subtitle>
-          </v-list-item-content>
-
-
-          <v-list-item-avatar
-          size="125"
-          tile
+        <v-row>
+          <v-col
+          v-for="(group, i) in groups"
+          :key="i"
           >
-          <v-img :src="group.img"></v-img>
-        </v-list-item-avatar>
-      </v-list-item>
+          <v-card
+          color="green accent-4"
+          dark
+          >
+          <v-list-item three-line>
+            <v-list-item-content class="align-self-start">
+              <v-list-item-title
+              class="headline mb-2"
+              v-text="group.name"
+              ></v-list-item-title>
 
-      <v-card-actions>
-        <v-btn color="light-green accent-4" :href=group.url target="_blank">参加する</v-btn>
-      </v-card-actions>
-    </v-card>
+              <v-list-item-subtitle v-text="group.description"></v-list-item-subtitle>
+                <v-list-item-subtitle v-text="'参加人数 : ' + group.num"></v-list-item-subtitle>
+            </v-list-item-content>
 
-  </v-col>
-</v-row>
+
+            <v-list-item-avatar
+            size="125"
+            tile
+            >
+            <v-img :src="group.src"></v-img>
+          </v-list-item-avatar>
+        </v-list-item>
+
+        <v-card-actions>
+  <v-btn color="light-green accent-4" :href=group.url target="_blank">参加する</v-btn>
+</v-card-actions>
+      </v-card>
+
+    </v-col>
+  </v-row>
 
 </v-card-text>
 </v-card>
@@ -99,9 +92,6 @@
 <script>
 import axios from 'axios';
 
-//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
-//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-//axios.defaults.baseURL = 'http://localhost:3000/';
 axios.interceptors.response.use(null, (error) => {
     return Promise.reject(error);
 });
@@ -111,70 +101,37 @@ export default {
     groups: [],
     list_groups: [
     ],
-    descriptionLimit: 60,
-    entries: [],
+
+    search: "",
+    search_tmp: "",
     isLoading: false,
-    model: null,
-    search: null,
-    items: [],
-    //search: "",
-    //search_tmp: "",
   }),
   watch: {
-    search(val) {
-      // すでに読み込み済みの場合は、何もしない
-      if (this.items.length > 0) return
-      // 読み込み中の場合も、何もしない
-      if (this.isLoading) return
+    search: function(val) {
+      if ( typeof(val) == null ) {
+        return
+      }
 
-      this.isLoading = true
+      if ( val.length == 0 ) {
+        this.isLoading = false
+        return
+      }
+
+      if ( this.isLoading ) {
+        return
+      }
       this.groups = []
-      // APIから、選択肢をfetchする
-      axios.get('http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups').then(response => {
-      //axios.get("http://localhost:3000/api/groups").then(res => {
-          this.list_groups = response.data
-          console.log(this.list_groups)
-          for (var i of this.list_groups) {
-            //console.log(i.name)
-            if ( i.name.indexOf(this.search) != -1 ) {
-              this.groups.push(i)
-            }
-          }
-
-      }).catch(err => {
-        console.log(err)
-        //読み込みが完了したので、loadingをfalseに
-      }).finally(() => (this.isLoading = false))
-    },
-    computed: {
-      fields () {
-        if (!this.model) return []
-
-        return Object.keys(this.model).map(key => {
-          return {
-            key,
-            value: this.model[key] || 'n/a'
-          }
-        })
-      },
-      items () {
-        return this.entries.map(entry => {
-          const Description = entry.Description.length > this.descriptionLimit
-          ? entry.Description.slice(0, this.descriptionLimit) + '...'
-          : entry.Description
-          return Object.assign({}, entry, { Description })
-        })
-      },
-    },
-  },
-  methods: {
-    getList() {
-      console.log("welcome to openchat group search")
+      axios.get("http://localhost:3000/api/groups")
+.then(response => { this.list_groups = response.data } )
+      for (var i of this.list_groups) {
+        //console.log(i.name)
+        if ( i.name.indexOf(this.search) != -1 ) {
+          this.groups.push(i)
+        }
+      }
     }
   },
-  created () {
-    this.getList()
-  }
+
 };
 </script>
 
