@@ -85,6 +85,9 @@ func (c Controller) AddGroup(db *sql.DB) http.HandlerFunc {
 		bodyBytes, err := ioutil.ReadAll(resp.Body)
 		if err != nil {
 			log.Fatal(err)
+			errorObj.Message = "Please input correct url."
+			utils.Respond(w, http.StatusInternalServerError, errorObj)
+			return
 		}
 		bodyString := string(bodyBytes)
 		//log.Println(bodyString)
@@ -106,10 +109,24 @@ func (c Controller) AddGroup(db *sql.DB) http.HandlerFunc {
 		}
 
 		img_row := slice[base_num+5]
+		fmt.Println("img ok")
 		name_row := slice[base_num+17]
+		fmt.Println("name ok")
 		num_row := slice[base_num+18]
+		fmt.Println("num ok")
 		description_row := slice[base_num+19]
+		fmt.Println("desc ok")
 		url_row := slice[base_num+20]
+		if strings.HasSuffix(description_row, "</p>") != true {
+			for i := 0; i < 100; i++ {
+				s := slice[base_num+19+i]
+				if strings.HasSuffix(s, "</p>") {
+					url_row = slice[base_num+20+i]
+					fmt.Println("url ok")
+					break
+				}
+			}
+		}
 
 		/*
 			fmt.Println(name_row)
@@ -120,14 +137,17 @@ func (c Controller) AddGroup(db *sql.DB) http.HandlerFunc {
 		*/
 		name := name_row[strings.Index(name_row, `">`)+2 : strings.Index(name_row, `</p>`)]
 		num, _ := strconv.Atoi(num_row[strings.Index(num_row, `">`)+10 : strings.Index(num_row, `</p>`)])
-		description := description_row[strings.Index(description_row, `">`)+2 : strings.Index(description_row, `</p>`)]
+		description := strings.Replace(description_row[strings.Index(description_row, `">`)+2:], `</p>`, ``, -1)
 		url := url_row[strings.Index(url_row, `href="`)+6 : strings.Index(url_row, `class=`)-2]
 		img := img_row[strings.Index(img_row, `c="`)+3 : strings.Index(img_row, `" alt`)]
+
+		description = strings.Split(description, "<")[0]
 
 		fmt.Println(name)
 		fmt.Println(num)
 		fmt.Println(description)
 		fmt.Println(url)
+		fmt.Println("!!!")
 		fmt.Println(img)
 
 		//byteArray, _ := ioutil.ReadAll(resp.Body)
@@ -143,7 +163,7 @@ func (c Controller) AddGroup(db *sql.DB) http.HandlerFunc {
 		group.Img = img + `.jpg`
 		group.Num = num
 		if err == sql.ErrNoRows {
-			err = db.QueryRow(" insert into chats (name, description, url, img, num) values ($1, $2, $3, $4, $5) RETURNING id;", group.Name, group.Description, group.Url, group.Img, group.Num).Scan(&group.ID)
+			err = db.QueryRow("($1, $2, $3, $4, $5) RETURNING id;", group.Name, group.Description, group.Url, group.Img, group.Num).Scan(&group.ID)
 			if err != nil {
 				log.Println(err)
 				errorObj.Message = "Server error"

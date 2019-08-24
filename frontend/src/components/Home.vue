@@ -99,18 +99,17 @@
 <script>
 import axios from 'axios';
 
+//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+//axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//axios.defaults.baseURL = 'http://localhost:3000/';
 axios.interceptors.response.use(null, (error) => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
 export default {
   data: () => ({
     groups: [],
     list_groups: [
-      {name: "test", description: "test"},
-      {name: "test", description: "test"},
-      {name: "test", description: "test"},
-      {name: "test", description: "test"},
     ],
     descriptionLimit: 60,
     entries: [],
@@ -129,15 +128,19 @@ export default {
       if (this.isLoading) return
 
       this.isLoading = true
-
+      this.groups = []
       // APIから、選択肢をfetchする
-      axios.get('http://localhost:3000/api/groups').then(res => {
-        const {
-          count,
-          entries
-        } = res.data
-        this.count = count
-        this.entries = entries
+      axios.get('http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups').then(response => {
+      //axios.get("http://localhost:3000/api/groups").then(res => {
+          this.list_groups = response.data
+          console.log(this.list_groups)
+          for (var i of this.list_groups) {
+            //console.log(i.name)
+            if ( i.name.indexOf(this.search) != -1 ) {
+              this.groups.push(i)
+            }
+          }
+
       }).catch(err => {
         console.log(err)
         //読み込みが完了したので、loadingをfalseに
@@ -166,7 +169,7 @@ export default {
   },
   methods: {
     getList() {
-      console.log("welcome to openchat search")
+      console.log("welcome to openchat group search")
     }
   },
   created () {

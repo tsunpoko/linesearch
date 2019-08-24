@@ -1,6 +1,5 @@
 <template>
   <v-app>
-
     <v-app-bar app fixed clipped-left text-center color="green accent-3" dark>
   <v-spacer></v-spacer>
   <v-toolbar-title class="font-weight-medium">

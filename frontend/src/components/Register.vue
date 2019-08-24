@@ -70,8 +70,10 @@
 <script>
 import axios from 'axios';
 
-//axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*';
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+//axios.defaults.baseURL = 'http://localhost:3000/';
+axios.defaults.baseURL = 'http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000';
 axios.interceptors.response.use(null, (error) => {
     return Promise.reject(error);
 });
@@ -89,8 +91,10 @@ axios.interceptors.response.use(null, (error) => {
       registGroup () {
         let params = new URLSearchParams();
         params.append('url', this.charge_name);
-        params.append('url2', this.charge_name);
-        axios.post("http://localhost:3000/api/groups", params)
+        //params.append('url2', this.charge_name);
+        //axios.post("http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups", params)
+        axios.post("/api/groups", params)
+        //axios.post("http://localhost:3000/api/groups", params)
         .then(response => { console.log(response) } )
         .catch(error => {
           console.log(error);
