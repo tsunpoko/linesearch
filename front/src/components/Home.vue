@@ -103,7 +103,7 @@ import axios from 'axios';
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //axios.defaults.baseURL = 'http://localhost:3000/';
 axios.interceptors.response.use(null, (error) => {
-  return Promise.reject(error);
+    return Promise.reject(error);
 });
 
 export default {
@@ -129,20 +129,18 @@ export default {
       this.isLoading = true
       this.groups = []
       // APIから、選択肢をfetchする
-      //axios.get('http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups')
-      axios.get('http://localhost:3000/api/groups')
+      axios.get('http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups')
+      //axios.get('http://localhost:3000/api/groups')
       //axios.get('http://jsonplaceholder.typicode.com/todos')
-      .then(response => {
-        this.list_groups = response.data
-        console.log(this.list_groups)
-        for (var i of this.list_groups) {
-          console.log(i.name)
-          if ( i.name.indexOf(this.search) != -1 ) {
-            this.groups.push(i)
+          .then(response => {
+              this.list_groups = response.data
+          for (var i of this.list_groups) {
+
+            if ( i.name.indexOf(this.search) != -1 ) {
+              this.groups.push(i)
+            }
           }
-        }
-        console.log(this.group)
-      })
+          })
       .catch(err => {
         console.log(err)
         //読み込みが完了したので、loadingをfalseに

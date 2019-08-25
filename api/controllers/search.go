@@ -163,7 +163,7 @@ func (c Controller) AddGroup(db *sql.DB) http.HandlerFunc {
 		group.Img = img + `.jpg`
 		group.Num = num
 		if err == sql.ErrNoRows {
-			err = db.QueryRow("($1, $2, $3, $4, $5) RETURNING id;", group.Name, group.Description, group.Url, group.Img, group.Num).Scan(&group.ID)
+			err = db.QueryRow("insert into chats (name, description, url, img, num) values ($1, $2, $3, $4, $5) RETURNING id;", group.Name, group.Description, group.Url, group.Img, group.Num).Scan(&group.ID)
 			if err != nil {
 				log.Println(err)
 				errorObj.Message = "Server error"
