@@ -88,10 +88,17 @@ export default {
   }),
   methods: {
     registGroup () {
-
       let params = new URLSearchParams();
       params.append('url', this.charge_name);
       axios.post("http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups", params)
+      .then(res => {
+        alert("登録しました")
+      })
+      .catch(err => {
+        alert("すいません。開発終了しました。新しいURLのタイプに変わったので、それに対応していません。つまり登録出来ないということです。許してください。OKを押すと僕が好きなラッパーの曲に飛びます。")
+        var url = 'https://www.youtube.com/watch?v=jHKt6GFtEXE'
+        window.open(url, '_blank')
+      })
     }
   }
 };

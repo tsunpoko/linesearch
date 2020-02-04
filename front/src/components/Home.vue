@@ -174,6 +174,7 @@ export default {
   },
   created () {
     this.getList()
+    alert("サービス終了しました。ポートフォリオのために一時的に公開しています。")
   }
 };
 </script>
