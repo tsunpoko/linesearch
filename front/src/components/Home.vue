@@ -103,7 +103,7 @@ import axios from 'axios';
 //axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 //axios.defaults.baseURL = 'http://localhost:3000/';
 axios.interceptors.response.use(null, (error) => {
-    return Promise.reject(error);
+  return Promise.reject(error);
 });
 
 export default {
@@ -132,15 +132,15 @@ export default {
       axios.get('https://openchat-search.xyz/api/groups')
       //axios.get('http://localhost:3000/api/groups')
       //axios.get('http://jsonplaceholder.typicode.com/todos')
-          .then(response => {
-              this.list_groups = response.data
-          for (var i of this.list_groups) {
+      .then(response => {
+        this.list_groups = response.data
+        for (var i of this.list_groups) {
 
-            if ( i.name.indexOf(this.search) != -1 ) {
-              this.groups.push(i)
-            }
+          if ( i.name.indexOf(this.search) != -1 ) {
+            this.groups.push(i)
           }
-          })
+        }
+      })
       .catch(err => {
         console.log(err)
         //読み込みが完了したので、loadingをfalseに
@@ -170,6 +170,16 @@ export default {
   methods: {
     getList() {
       console.log("welcome to openchat group search")
+      axios.get('https://openchat-search.xyz/api/groups')
+      //axios.get('http://localhost:3000/api/groups')
+      //axios.get('http://jsonplaceholder.typicode.com/todos')
+      .then(response => {
+        this.groups = response.data
+      })
+      .catch(err => {
+        console.log(err)
+        //読み込みが完了したので、loadingをfalseに
+      }).finally(() => (this.isLoading = false))
     }
   },
   created () {
