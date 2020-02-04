@@ -90,7 +90,7 @@ export default {
     registGroup () {
       let params = new URLSearchParams();
       params.append('url', this.charge_name);
-      axios.post("http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups", params)
+      axios.post("https://openchat-search.xyz/api/groups", params)
       .then(res => {
         alert("登録しました")
       })

@@ -129,7 +129,7 @@ export default {
       this.isLoading = true
       this.groups = []
       // APIから、選択肢をfetchする
-      axios.get('http://v133-130-118-110.a049.g.tyo1.static.cnode.io:3000/api/groups')
+      axios.get('https://openchat-search.xyz/api/groups')
       //axios.get('http://localhost:3000/api/groups')
       //axios.get('http://jsonplaceholder.typicode.com/todos')
           .then(response => {
